@@ -1,0 +1,46 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.footer {
+    width: 100%;
+}
+.card {
+    border-radius: 20px;
+    background-color: #f8f9fa; /* Light gray background */
+}
+
+.card-title {
+    color: #343a40; /* Dark gray text */
+}
+
+.card-text {
+    color: #6c757d; /* Gray text */
+}
+.explore-btn {
+    background-color: #0B1C39; /* Default background color */
+    border-color: #0B1C39; /* Default border color */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition effect */
+}
+
+.explore-btn:hover {
+    background-color: #FF0000; /* Light color mask on hover */
+    border-color: transparent; /* Hide the border on hover */
+}
+.navy-blue {
+    color: #001F3F; /* Navy blue color */
+}
+
+.red {
+    color: #FF0000; /* Red color */
+}
+
+.welcome-text {
+    font-family: 'Montserrat', sans-serif; /* Apply the Montserrat font to the text */
+    font-weight: 700; /* Bold font weight */
+    /* Other styles for the welcome text */
+}
+
+
