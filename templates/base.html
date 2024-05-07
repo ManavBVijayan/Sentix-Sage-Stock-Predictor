@@ -14,16 +14,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <title>SentixSage</title>
+    <style>
+        .navbar-custom {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom">
         <div class="container-fluid justify-content-between">
             <a class="navbar-brand" href="#">
                 <img src="{% static 'images/SentixSage.png' %}" height="90 " alt="Logo">
             </a>
-            <button class="btn btn-outline-primary me-2">ProLog</button>
+            <div class="navbar-nav">
+            <a class="nav-link" href="{% url 'login' %}"><button id="prologBtn" class="btn btn-outline-primary me-2">ProLog</button></a> <!-- Add this line -->
+
+        </div>
         </div>
     </nav>
 

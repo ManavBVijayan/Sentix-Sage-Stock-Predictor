@@ -17,11 +17,11 @@ app.config_from_object(settings, namespace='CELERY')
 app.conf.beat_schedule = {
     'collect-daily-data': {
         'task': 'Task.tasks.collect_daily_data',
-        'schedule': crontab(hour=17, minute=3),
+        'schedule': crontab(hour=22, minute=50),
     },
     'feature-engineering-and-model-training': {
         'task': 'Task.tasks.feature_engineering_and_model_training',
-        'schedule': crontab(hour=17, minute=10),  # Schedule to run at midnight
+        'schedule': crontab(hour=22, minute=55),  # Schedule to run at midnight
     },
 }
 
