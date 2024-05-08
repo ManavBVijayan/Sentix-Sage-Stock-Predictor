@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.views.decorators.cache import cache_control
+
 from Data.models import StockPrice
 from AdminDashBoard.models import ProcessLog
 import pandas as pd
@@ -9,6 +11,7 @@ from io import BytesIO
 import base64
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
     return render(request, 'home.html')
 
@@ -23,7 +26,8 @@ def explore(request):
 
     # Fetch predictions for the next five days
     last_process_log = ProcessLog.objects.last()
-    predictions = [last_process_log.day1, last_process_log.day2, last_process_log.day3, last_process_log.day4, last_process_log.day5]
+    predictions = [last_process_log.day1, last_process_log.day2, last_process_log.day3, last_process_log.day4,
+                   last_process_log.day5]
 
     # Calculate dates for the next five days
     last_date = last_30_days_data[0].date

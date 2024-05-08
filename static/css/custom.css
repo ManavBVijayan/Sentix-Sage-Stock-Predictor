@@ -9,38 +9,37 @@ body {
 }
 .card {
     border-radius: 20px;
-    background-color: #f8f9fa; /* Light gray background */
+    background-color: #f8f9fa;
 }
 
 .card-title {
-    color: #343a40; /* Dark gray text */
+    color: #343a40;
 }
 
 .card-text {
-    color: #6c757d; /* Gray text */
+    color: #6c757d;
 }
 .explore-btn {
-    background-color: #0B1C39; /* Default background color */
-    border-color: #0B1C39; /* Default border color */
-    transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition effect */
+    background-color: #0B1C39;
+    border-color: #0B1C39;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .explore-btn:hover {
-    background-color: #FF0000; /* Light color mask on hover */
-    border-color: transparent; /* Hide the border on hover */
+    background-color: #FF0000;
+    border-color: transparent;
 }
 .navy-blue {
-    color: #001F3F; /* Navy blue color */
+    color: #001F3F;
 }
 
 .red {
-    color: #FF0000; /* Red color */
+    color: #FF0000;
 }
 
 .welcome-text {
-    font-family: 'Montserrat', sans-serif; /* Apply the Montserrat font to the text */
-    font-weight: 700; /* Bold font weight */
-    /* Other styles for the welcome text */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
 }
 
 
@@ -49,7 +48,7 @@ body {
 .chart-container {
     position: relative;
     width: 100%;
-    padding-bottom: 75%; /* Aspect ratio: 4:3 */
+    padding-bottom: 75%;
 }
 
 .chart-container img {
@@ -89,15 +88,75 @@ body {
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center; /* Center align the text */
+  text-align: center;
 }
 
 .banner-caption h2 {
-  font-size: 18px;
+  font-size: 1.5rem;
   margin-bottom: 5px;
 }
 
 .banner-caption p {
-  font-size: 14px;
+  font-size: 1rem;
   margin-bottom: 0;
+}
+
+
+@media (max-width: 576px) {
+  .banner-caption {
+    width: 80%;
+    font-size: 0.8rem;
+    padding: 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner-caption {
+    font-size: 1rem;
+  }
+}
+.graph-container {
+  overflow-x: auto;
+}
+
+
+#stock-chart {
+  width: 100%;
+  height: auto;
+}
+}
+
+.pagination-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: inline-block;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.pagination a {
+  color: navy;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s, color .3s;
+  font-size: 1em;
+}
+
+.pagination a.active {
+  background-color: #f44336;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+}
+
+
+.table {
+  font-size: 1em;
 }

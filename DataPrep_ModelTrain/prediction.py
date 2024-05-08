@@ -13,7 +13,4 @@ def prediction(next_five_days_close_prices,scaler):
         pred_exact = scaler.inverse_transform(pred_scaled_array)[0, 0]
         # Append the exact value to the list
         next_n_days_exact.append(pred_exact)
-
-    # Output the exact values for the next five days
-    print("Exact Values for Next Five Days Close Prices:", next_n_days_exact)
     return next_n_days_exact

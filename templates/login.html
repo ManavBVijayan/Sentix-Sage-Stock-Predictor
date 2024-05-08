@@ -1,19 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    <h1>Login</h1>
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <label for="admin_name">Admin Name:</label>
-        <input type="text" id="admin_name" name="admin_name"><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password"><br><br>
-        <input type="submit" value="Login">
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<div class="row justify-content-center align-items-center" style="background-image: url('{% static 'images/tech-daily-ztYmIQecyH4-unsplash.jpg' %}'); background-size: cover; height: 100vh;">
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col-lg-4"> <!-- Adjust the width of the login box for different screen sizes -->
+      <div class="card text-black" style="border: 1px solid #ccc; background: rgba(255, 255, 255, 0.5);">
+        <div class="card-body p-md-3">
+          <div class="text-center">
+            <h4 class="mt-1 mb-3">Log In</h4>
+          </div>
+          <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <p>Please login to your account</p>
+            <div class="form-outline mb-3">
+              <label class="form-label" for="admin_name">Admin name</label>
+              <input type="text" id="admin_name" class="form-control" placeholder="Enter admin name" name="admin_name" />
+            </div>
+            <div class="form-outline mb-3">
+              <label class="form-label" for="password">Password</label>
+              <input type="password" id="password" class="form-control" name="password" />
+            </div>
+            <div class="text-center">
+              <button class="btn btn-primary btn-block mb-3" type="submit" style="background-color: #001f3f; border-color: #001f3f; color: #fff; font-family: 'Roboto', sans-serif; font-weight: bold;">Log in</button>
+            </div>
+          </form>
+          <div class="text-center">
+            {% for msg in messages %}
+            <div class="alert alert-warning alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                  aria-hidden="true">&times;</span></button>
+              {{msg}}<strong>!</strong>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function(){
+    // Close alert messages when the close button is clicked
+    $('.alert .close').on('click', function(){
+      $(this).parent().hide(); // Hide the alert message parent div
+    });
+  });
+</script>
+
+{% endblock %}

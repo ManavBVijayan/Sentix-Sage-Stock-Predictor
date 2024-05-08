@@ -1,3 +1,5 @@
+import time
+
 from celery import shared_task
 from Data.stock_data import collect_stock_data
 from Data.news_data import bs_news_setup, toi_news_setup, remove_duplicates, save_new_data
@@ -49,32 +51,49 @@ def collect_daily_data(self):
 
 @shared_task(bind=True)
 def feature_engineering_and_model_training(self):
-    try:
-        # Get the ProcessLog for the current date (created in collect_daily_data)
-        today = datetime.today().date()
-        process_log = ProcessLog.objects.get(date=today)
+    max_attempts = 3  # Maximum number of attempts to train the model
+    attempt = 1
 
-        # Update ProcessLog for model training status
-        process_log.model_training_status = False
-        process_log.save()
+    while attempt <= max_attempts:
+        try:
+            # Get the ProcessLog for the current date (created in collect_daily_data)
+            today = datetime.today().date()
+            process_log = ProcessLog.objects.get(date=today)
 
-        # Execute data processing and training logic
-        data = merge_data()
-        mse, r2, next_five_days_close_prices, scaler = train_model(data)
-        process_log.model_training_status = True
-        process_log.mse = mse
-        process_log.r2_score = r2
+            # Update ProcessLog for model training status
+            process_log.model_training_status = False
+            process_log.save()
 
-        # Make predictions and update the corresponding fields
-        predicted_values = prediction(next_five_days_close_prices, scaler)
-        process_log.day1 = predicted_values[0]
-        process_log.day2 = predicted_values[1]
-        process_log.day3 = predicted_values[2]
-        process_log.day4 = predicted_values[3]
-        process_log.day5 = predicted_values[4]
-        process_log.save()
+            # Execute data processing and training logic
+            data = merge_data()
+            mse, r2, next_five_days_close_prices, scaler = train_model(data)
 
-        logger.info('Feature engineering and model training task completed successfully')
+            # Check if R2 score is above 0.60
+            if r2 > 0.60:
+                process_log.model_training_status = True
+                process_log.mse = mse
+                process_log.r2_score = r2
 
-    except Exception as e:
-        logger.error(f"An error occurred during feature engineering and model training: {e}")
+                # Make predictions and update the corresponding fields
+                predicted_values = prediction(next_five_days_close_prices, scaler)
+                process_log.day1 = predicted_values[0]
+                process_log.day2 = predicted_values[1]
+                process_log.day3 = predicted_values[2]
+                process_log.day4 = predicted_values[3]
+                process_log.day5 = predicted_values[4]
+                process_log.save()
+
+                logger.info('Feature engineering and model training task completed successfully')
+                break  # Exit the loop if successful
+            else:
+                # Retry training
+                attempt += 1
+                logger.info(f"Attempt {attempt} - R2 score below 0.60, retrying model training...")
+                time.sleep(5)  # Add a delay before retrying
+
+        except Exception as e:
+            logger.error(f"An error occurred during feature engineering and model training: {e}")
+            break  # Exit the loop if an error occurs
+
+    if attempt > max_attempts:
+        logger.error("Maximum attempts reached. Model training failed.")

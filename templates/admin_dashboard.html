@@ -1,12 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-</head>
-<body>
-    <h1>Welcome to the Admin Dashboard</h1>
-    <!-- Add content for admin dashboard here -->
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<div class="container">
+  <h2 class="text-center mb-4">Admin Dashboard</h2>
+  <div class="table-responsive">
+    <table style="border-radius: 15px; overflow: hidden;" class="table table-bordered table-striped">
+      <thead style="background-color: #001f3f; color: #fff;">
+        <tr>
+          <th>Date</th>
+          <th>Stock Status</th>
+          <th>BS Status</th>
+          <th>TOI Status</th>
+          <th>Model Training Status</th>
+          <th>MSE</th>
+          <th>R2 Score</th>
+          <th>Day 1</th>
+          <th>Day 2</th>
+          <th>Day 3</th>
+          <th>Day 4</th>
+          <th>Day 5</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for processlog in page_obj %}
+        <tr>
+          <td style="color: red;">{{ processlog.date }}</td>
+          <td>{{ processlog.stock_status }}</td>
+          <td>{{ processlog.bs_status }}</td>
+          <td>{{ processlog.toi_status }}</td>
+          <td>{{ processlog.model_training_status }}</td>
+          <td>{{ processlog.mse|floatformat:"3" }}</td>
+          <td>{{ processlog.r2_score|floatformat:"2" }}</td>
+          <td>{{ processlog.day1|floatformat:"2" }}</td>
+          <td>{{ processlog.day2|floatformat:"2" }}</td>
+          <td>{{ processlog.day3|floatformat:"2" }}</td>
+          <td>{{ processlog.day4|floatformat:"2" }}</td>
+          <td>{{ processlog.day5|floatformat:"2" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination-container">
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+      <a href="?page=1">&laquo; First</a>
+      <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a href="#" class="active">{{ num }}</a>
+        {% else %}
+          <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Next</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
