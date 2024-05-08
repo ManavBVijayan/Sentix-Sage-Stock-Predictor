@@ -241,3 +241,5 @@ def save_new_data(news_data):
             print("Error saving news data:", e)
 
 
+
+

@@ -1,14 +1,8 @@
 from django.shortcuts import render
 from django.views.decorators.cache import cache_control
-
 from Data.models import StockPrice
 from AdminDashBoard.models import ProcessLog
-import pandas as pd
-import numpy as np
 import datetime
-import matplotlib.pyplot as plt
-from io import BytesIO
-import base64
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
