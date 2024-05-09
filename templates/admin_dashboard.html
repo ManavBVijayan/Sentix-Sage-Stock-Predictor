@@ -3,6 +3,10 @@
 {% block body %}
 <div class="container">
   <h2 class="text-center mb-4">Admin Dashboard</h2>
+  <form action="{% url 'admin_dashboard' %}" method="post" class="float-right">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Manual</button>
+  </form>
   <div class="table-responsive">
     <table style="border-radius: 15px; overflow: hidden;" class="table table-bordered table-striped">
       <thead style="background-color: #001f3f; color: #fff;">
@@ -41,7 +45,7 @@
       </tbody>
     </table>
   </div>
-  <div class="pagination-container">
+  <div class="pagination-container d-flex justify-content-center"> <!-- Center the pagination links -->
     <div class="pagination">
       {% if page_obj.has_previous %}
       <a href="?page=1">&laquo; First</a>
@@ -60,6 +64,5 @@
       {% endif %}
     </div>
   </div>
-
 </div>
 {% endblock %}
