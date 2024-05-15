@@ -4,11 +4,11 @@ from AdminDashBoard.models import ProcessLog
 from django.shortcuts import render
 import plotly.graph_objs as go
 from datetime import timedelta,date
-from Data.news_data import export_news_to_csv
+
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
-    export_news_to_csv('news.csv')
+
 
     return render(request, 'home.html')
 
