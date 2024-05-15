@@ -3,7 +3,8 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from .models import ProcessLog
-from Task.tasks import collect_daily_data,feature_engineering_and_model_training
+from Task.tasks import collect_daily_data, feature_engineering_and_model_training
+
 
 def login(request):
     if request.method == 'POST':
@@ -19,25 +20,23 @@ def login(request):
 
 
 def admin_dashboard(request):
+    processlogs = ProcessLog.objects.all().order_by('-date')
+    paginator = Paginator(processlogs, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'admin_dashboard.html', {'page_obj': page_obj})
+
+
+def collect_data(request):
     if request.method == 'POST':
         collect_daily_data()
+        return redirect('admin_dashboard')
+
+
+def train_model(request):
+    if request.method == 'POST':
         feature_engineering_and_model_training()
-        processlogs = ProcessLog.objects.all()
-        paginator = Paginator(processlogs, 10)  # Show 10 entries per page
-
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-
-        return render(request, 'admin_dashboard.html', {'page_obj': page_obj})
-    else:
-        # If it's a GET request, just retrieve and paginate process logs
-        processlogs = ProcessLog.objects.all()
-        paginator = Paginator(processlogs, 2)
-
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-
-        return render(request, 'admin_dashboard.html', {'page_obj': page_obj})
+        return redirect('admin_dashboard')
 
 
 def logout_view(request):

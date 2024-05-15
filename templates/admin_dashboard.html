@@ -3,10 +3,21 @@
 {% block body %}
 <div class="container">
   <h2 class="text-center mb-4">Admin Dashboard</h2>
-  <form action="{% url 'admin_dashboard' %}" method="post" class="float-right">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-primary">Manual</button>
-  </form>
+<div class="row">
+    <div class="col-md-6 mb-3">
+      <form action="{% url 'collect_data' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-block">Collect Data</button>
+      </form>
+    </div>
+    <div class="col-md-6 mb-3">
+      <form action="{% url 'train_model' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success btn-block">Train Model</button>
+      </form>
+    </div>
+  </div>
+
   <div class="table-responsive">
     <table style="border-radius: 15px; overflow: hidden;" class="table table-bordered table-striped">
       <thead style="background-color: #001f3f; color: #fff;">

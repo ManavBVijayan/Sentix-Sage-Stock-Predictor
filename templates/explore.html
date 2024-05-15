@@ -6,24 +6,22 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
-        <div class="banner-card mb-4" style="width: 100%; height: 30vh;"> <!-- Adjust height here -->
-          <img src="{% static 'images/nick-chong-N__BnvQ_w18-unsplash.jpg' %}" alt="Stock Market Image" class="banner-image">
-          <div class="banner-caption ">
+        <div class="banner-card mb-4">
+          <img src="{% static 'images/nick-chong-N__BnvQ_w18-unsplash.jpg' %}" alt="Stock Market Image" class="banner-image img-fluid" style="max-height: 200px;">
+          <div class="banner-caption">
             <h2>This graph represents the stock price of Apple.</h2>
             <p>Please note that predictions are based on various factors including news sentiment, but other factors may also influence stock prices. Use this information as an additional tool for decision-making.</p>
           </div>
         </div>
         <div class="card widget-card border-light shadow-sm">
           <div class="card-body p-4">
-            <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
-              <div class="mb-3 mb-sm-0">
-                <h5 class="card-title widget-card-title">Stock Close Price and Predictions</h5>
-              </div>
-            </div>
-            <div class="graph-container" style="position: relative;">
-              <canvas id="stock-chart" style="height: 400px; width: 100%;"></canvas>
-              <!-- Add the custom legend inside the canvas -->
-              <div class="position-absolute top-0 end-0 mt-3 me-3" id="custom-legend"></div>
+            <h5 class="card-title widget-card-title mb-4">Stock Close Price and Predictions</h5>
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div id="plotly-graph" class="text-center"></div>
+                    </div>
+                </div>
             </div>
           </div>
         </div>
@@ -32,117 +30,9 @@
   </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type="text/javascript">
-var dates = {{ dates|safe }};
-var values = {{ values|safe }};
-
-var actualValues = values.slice(0, values.length - 5); // Actual stock close prices
-var predictedValues = values.slice(-5); // Predicted values
-
-// Extend the dates array for predicted dates
-var lastDate = new Date(dates[dates.length - 1]);
-var predictedDates = [];
-for (var i = 1; i <= 5; i++) {
-    var nextDate = new Date(lastDate.getTime() + i * 24 * 60 * 60 * 1000);
-    predictedDates.push(nextDate.toISOString().slice(0, 10));
-}
-
-var ctx = document.getElementById('stock-chart').getContext('2d');
-var chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: dates.concat(predictedDates), // Concatenate actual and predicted dates
-        datasets: [{
-            label: 'Stock Close Price',
-            data: actualValues.concat(predictedValues), // Concatenate actual and predicted values
-            borderColor: 'rgba(0, 0, 139, 1)', // Dark blue color for actual values
-            backgroundColor: 'rgba(0, 0, 139, 0.2)', // Light blue fill color for actual values
-            borderWidth: 2,
-            pointRadius: 6,
-            pointBackgroundColor: Array(values.length - 5).fill('rgba(0, 0, 139, 1)').concat(['rgba(255, 0, 0, 1)', 'rgba(255, 0, 0, 1)', 'rgba(255, 0, 0, 1)', 'rgba(255, 0, 0, 1)', 'rgba(255, 0, 0, 1)']), // Blue color for the first data points, red color for the last 5 data points
-            fill: {
-                target: 'origin',
-                above: 'rgba(0, 0, 139, 0.2)' // Gradient fill color for actual values
-            }
-        }]
-    },
-    options: {
-            animation: {
-                duration: 1000, // Animation duration in milliseconds
-                easing: 'easeInOutQuart' // Easing function
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            var label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed.y !== null) {
-                                label += context.parsed.y.toFixed(2);
-                            }
-                            return label;
-                        }
-                    }
-                },
-                title: {
-                    display: true,
-                    text: 'Stock Close Price',
-                    font: {
-                        size: 16,
-                        weight: 'bold'
-                    }
-                },
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Date',
-                        font: {
-                            weight: 'bold'
-                        }
-                    },
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        maxTicksLimit: 10 // Limit number of ticks on x-axis
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Stock Price',
-                        font: {
-                            weight: 'bold'
-                        }
-                    },
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.1)'
-                    },
-                    ticks: {
-                        precision: 2
-                    }
-                }
-            }
-        }
-    });
-// Add a custom legend for predicted close price
-var customLegendHTML = '<div style="display: flex; align-items: center;">';
-customLegendHTML += '<div style="width: 12px; height: 12px; background-color: rgba(255, 0, 0, 1); border-radius: 50%; margin-right: 5px;"></div>';
-customLegendHTML += '<div style="font-size: 14px;">Predicted Close Price</div>';
-customLegendHTML += '</div>';
-
-document.getElementById('custom-legend').innerHTML = customLegendHTML;
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    var graphData = JSON.parse('{{ graph_json|escapejs }}');
+    Plotly.newPlot('plotly-graph', graphData.data, graphData.layout);
 </script>
 {% endblock %}

@@ -66,7 +66,7 @@ def scrape_business_standard(driver):
                     time.sleep(2)
 
             load_more_attempts += 1
-            if load_more_attempts >= 1:
+            if load_more_attempts >= 3:
                 print("Reached maximum number of load more attempts.")
                 break
             time.sleep(2)
@@ -242,4 +242,21 @@ def save_new_data(news_data):
 
 
 
+# import csv
+#
+# def export_news_to_csv(file_path):
+#     # Open the file in 'write' mode with encoding='utf-8'
+#     with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+#         # Create a CSV writer object
+#         writer = csv.writer(csvfile)
+#
+#         # Write CSV header
+#         writer.writerow(['Date', 'Headline', 'Website'])
+#
+#         # Fetch all News objects ordered by date
+#         news_objects = News.objects.order_by('date')
+#
+#         # Write each news object to the CSV file
+#         for news in news_objects:
+#             writer.writerow([news.date, news.headline, news.website])
 

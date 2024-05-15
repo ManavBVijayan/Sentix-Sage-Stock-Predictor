@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-o3ecyjmcearig0i6ml)k1nen&l%(c+e1*wh(%lrrkg@t_9y5(m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['13.60.53.75','0.0.0.0']
 
 # Application definition
@@ -57,7 +58,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'SentixSagePro.urls'
-
+#
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = ['http://13.60.53.75']
